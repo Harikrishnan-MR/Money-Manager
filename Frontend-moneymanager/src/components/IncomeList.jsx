@@ -4,30 +4,32 @@ import moment from "moment";
 import {useState} from "react";
 
 const IncomeList = ({transactions, onDelete, onDownload, onEmail}) => {
-    const [loading, setLoading] = useState(false);
+    const [downloadLoading, setDownloadLoading] = useState(false)
+    const [emailLoading, setEmailLoading] = useState(false);
     const handleEmail = async () => {
-        setLoading(true);
+        setEmailLoading(true);
         try {
             await onEmail();
         }finally {
-            setLoading(false);
+            setEmailLoading(false);
         }
     }
     const handleDownload = async () => {
-        setLoading(true);
+        setDownloadLoading(true);
         try {
             await onDownload();
         }finally {
-            setLoading(false);
+            setDownloadLoading(false);
         }
     }
     return (
+        
         <div className="card">
             <div className="flex items-center justify-between">
                 <h5 className="text-lg">Income Sources</h5>
                 <div className="flex items-center justify-end gap-2">
-                    <button disabled={loading} className="card-btn" onClick={handleEmail}>
-                        {loading ? (
+                    <button disabled={emailLoading} className="card-btn" onClick={handleEmail}>
+                        {emailLoading ? (
                             <>
                                 <LoaderCircle className="w-4 h-4 animate-spin"/>
                                 Emailing...
@@ -39,8 +41,8 @@ const IncomeList = ({transactions, onDelete, onDownload, onEmail}) => {
                             </>
                         )}
                     </button>
-                    <button disabled={loading} className="card-btn" onClick={handleDownload}>
-                        {loading ? (
+                    <button disabled={downloadLoading} className="card-btn" onClick={handleDownload}>
+                        {downloadLoading ? (
                             <>
                                 <LoaderCircle className="w-4 h-4 animate-spin"/>
                                 Downloading...
@@ -71,6 +73,8 @@ const IncomeList = ({transactions, onDelete, onDownload, onEmail}) => {
                 ))}
             </div>
         </div>
+    
+        
     )
 }
 
